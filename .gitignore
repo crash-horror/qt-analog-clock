@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# vs code
+.vscode/
+
+# Extra
+_pyinstaller.bat
+_old unused/
+
