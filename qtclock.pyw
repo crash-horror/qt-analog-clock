@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.alarmrotation = 0
         self.alarmtime = 0
         self.alarmvisible = 1
+        self.showseconds = True
         self.initUI()
 
 
@@ -46,7 +47,6 @@ class MainWindow(QMainWindow):
 
 
     def resizeEvent(self, event):  # pylint: disable=W0613
-        # print(self.clockw.size())
         w = self.clockw.size().width()
         if w < 350:
             w = 350
@@ -58,7 +58,7 @@ class MainWindow(QMainWindow):
 
     def move_hands(self):
         self.setWindowTitle(time.strftime("%X", time.localtime(time.time())))
-        if SHOWSECONDS:
+        if self.showseconds:
             self.secrotation = int(time.strftime("%S", time.localtime(time.time()))) * 6
 
         if self.firstrun or int(time.strftime("%S", time.localtime(time.time()))) == 0:
@@ -89,7 +89,13 @@ class MainWindow(QMainWindow):
                 self.alarmvisible = 1
             self.clockw.update()
 
+        if event.button() == Qt.MidButton:
+            self.showseconds = not self.showseconds
+            self.clockw.update()
+
         self.oldPos = event.globalPos()
+
+        print(event.button())
 
 
     def mouseMoveEvent(self, event):
@@ -151,7 +157,7 @@ class clockwidget(QWidget):
         minuteshandpaint.drawImage(-self.minuteshandimage.width()/2, -
                               self.minuteshandimage.height()/2, self.minuteshandimage)
 
-        if SHOWSECONDS:
+        if gui.showseconds:
             sechandpaint = QPainter(self)
             sechandpaint.setRenderHint(QPainter.SmoothPixmapTransform, True)
             sechandpaint.translate(self.sechandimage.width()/2,
@@ -187,8 +193,6 @@ def resource_path(relative_path):
 
 
 if __name__ == '__main__':
-
-    SHOWSECONDS = True
 
     app = QApplication(sys.argv)
     gui = MainWindow()

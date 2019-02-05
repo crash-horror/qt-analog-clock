@@ -4,7 +4,7 @@ A dark analog clock with basic alarm functionality.
 
 ![Imgur](https://imgur.com/0vyP4PB.png)
 
-Mousewheel to set alarm, right-click to toggle it on/off.
+Mousewheel to set alarm, right-click to toggle it on/off, middle click to toggle seconds.
 
 Have Fun.
 
