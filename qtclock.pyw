@@ -7,7 +7,7 @@ import os
 import sys
 import time
 # pylint: disable=no-name-in-module
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QPoint
 from PyQt5.QtGui import QIcon, QImage, QPainter
 from PyQt5.QtMultimedia import QSound
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
@@ -17,6 +17,8 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
         self.firstrun = True
         self.size = 0
         self.secrotation = 0
@@ -79,16 +81,22 @@ class MainWindow(QMainWindow):
             self.alarmtime = self.alarmrotation % 360
 
 
-    def mousePressEvent(self, QMouseEvent):
-        if QMouseEvent.button() == Qt.RightButton:
-            # print("Right Button Clicked")
+    def mousePressEvent(self, event):
+        if event.button() == Qt.RightButton:
             if self.alarmvisible == 1:
                 self.alarmvisible = 0
             else:
                 self.alarmvisible = 1
-            # print(self.alarmvisible)
             self.clockw.update()
 
+        self.oldPos = event.globalPos()
+
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.LeftButton:
+            delta = QPoint (event.globalPos() - self.oldPos)
+            self.move(self.x() + delta.x(), self.y() + delta.y())
+            self.oldPos = event.globalPos()
 
 
 class clockwidget(QWidget):
@@ -170,7 +178,7 @@ def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS  # pylint: disable
     except Exception:
         base_path = os.path.abspath(".")
 
@@ -187,9 +195,11 @@ if __name__ == '__main__':
 
     def tick():
         gui.move_hands()
+        # print('tick')
 
     timer = QTimer()
     timer.timeout.connect(tick)
     timer.start(1000)
 
     sys.exit(app.exec_())
+
