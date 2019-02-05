@@ -2,7 +2,7 @@
 
 A dark analog clock with basic alarm functionality.
 
-![Imgur](https://imgur.com/IL94by2.png)
+![Imgur](https://imgur.com/0vyP4PB.png)
 
 Mousewheel to set alarm, right-click to toggle it on/off.
 
