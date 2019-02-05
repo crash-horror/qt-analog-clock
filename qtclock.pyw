@@ -95,14 +95,13 @@ class MainWindow(QMainWindow):
 
         self.oldPos = event.globalPos()
 
-        print(event.button())
-
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             delta = QPoint (event.globalPos() - self.oldPos)
             self.move(self.x() + delta.x(), self.y() + delta.y())
             self.oldPos = event.globalPos()
+
 
 
 class clockwidget(QWidget):
@@ -125,7 +124,7 @@ class clockwidget(QWidget):
         self.centermaskimage.load(resource_path('stuff/centermask.png'))
 
 
-    def paintEvent(self, event):  # pylint: disable=W0613
+    def paintEvent(self, event):
         cfacepaint = QPainter(self)
         cfacepaint.translate(self.cfaceimage.width() /
                                2, self.cfaceimage.height()/2)
@@ -180,6 +179,7 @@ class clockwidget(QWidget):
                               self.alarmaskimage.height()/2, self.alarmaskimage)
 
 
+
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
@@ -187,7 +187,6 @@ def resource_path(relative_path):
         base_path = sys._MEIPASS  # pylint: disable
     except Exception:
         base_path = os.path.abspath(".")
-
     return os.path.join(base_path, relative_path)
 
 
@@ -197,12 +196,8 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     gui = MainWindow()
 
-    def tick():
-        gui.move_hands()
-        # print('tick')
-
     timer = QTimer()
-    timer.timeout.connect(tick)
+    timer.timeout.connect(gui.move_hands)
     timer.start(1000)
 
     sys.exit(app.exec_())
