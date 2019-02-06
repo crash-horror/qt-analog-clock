@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
-# qtclock.pyw
 # github.com/crash-horror
+# qtclock.pyw
 
 
 import os
