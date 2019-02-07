@@ -65,7 +65,6 @@ class MainWindow(QMainWindow):
             self.hourrotation = int(time.strftime("%H", time.localtime(time.time()))) * 30 +\
                 int(time.strftime("%M", time.localtime(time.time()))) / 2
 
-            print('blink', self.hourrotation % 360)
             if self.alarmtime == self.hourrotation % 360 and self.alarmvisible == 1:
                 QSound.play(resource_path("stuff/alarm.wav"))
             self.firstrun = False
@@ -183,7 +182,7 @@ def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS  # pylint: disable
+        base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
